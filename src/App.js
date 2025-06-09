@@ -1,153 +1,38 @@
-// import React, { useEffect, useState } from 'react';  // Import React and React hooks: useEffect and useState
-// import './App.css';                                 // Import CSS styles for this component
-
-// function App() {
-//   // State to hold list of items fetched from backend
-//   const [items, setItems] = useState([]);
-
-//   // State to hold the current input value for adding a new item
-//   const [newItem, setNewItem] = useState('');
-
-//   // useEffect runs once after the component mounts (empty dependency array [])
-//   // Fetch initial list of items from the backend API
-//   useEffect(() => {
-//     //https://shoppinglist-624w.onrender.com/items/
-//     fetch('https://shoppinglist-624w.onrender.com/items/')           // Call GET /items/ API
-//       .then(res => res.json())                       // Parse response JSON
-//       .then(setItems);                               // Set the received items into state
-//   }, []);                                           // Empty dependency => run once on mount
-
-//   // Function to handle adding a new item when button is clicked
-//   const handleAddItem = async () => {
-//     // Create a new item object with unique ID based on timestamp,
-//     // the name from input, and default purchased status false
-//     const item = {
-//       id: Date.now(),          // Use current timestamp as temporary ID
-//       name: newItem,           // Item name from input state
-//       is_purchased: false      // Default purchased state
-//     };
-
-//     // Send POST request to backend to add new item
-//     const res = await fetch('https://shoppinglist-624w.onrender.com/items/', {
-//       method: 'POST',                           // HTTP POST method
-//       headers: { 'Content-Type': 'application/json' },  // JSON payload
-//       body: JSON.stringify(item)                // Convert JS object to JSON string
-//     });
-
-//     // Parse JSON response from backend (the saved item with ID, etc.)
-//     const data = await res.json();
-
-//     // Update local state with the newly added item appended to the list
-//     setItems([...items, data]);
-
-//     // Clear the input box after adding
-//     setNewItem('');
-//   };
-
-//   // Function to toggle the purchased status of an item when clicked
-//   const toggleItem = async (item) => {
-//     // Create updated item object flipping the is_purchased boolean
-//     const updated = { ...item, is_purchased: !item.is_purchased };
-
-//     // Send PUT request to backend to update the item
-//     const res = await fetch(`https://shoppinglist-624w.onrender.com/items/${item.id}/`, {
-//       method: 'PUT',                            // HTTP PUT method for update
-//       headers: { 'Content-Type': 'application/json' },
-//       body: JSON.stringify(updated)             // Send updated item JSON
-//     });
-
-//     // Parse response JSON (the updated item)
-//     const data = await res.json();
-
-//     // Update local state: replace the old item with the updated one in the list
-//     setItems(items.map(i => i.id === data.id ? data : i));
-//   };
-
-//   // JSX to render the UI
-//   return (
-//     <div className="app">
-//       <h1>🛒 Shopping List</h1>
-
-//       {/* Input section to add new item */}
-//       <div className="input-section">
-//         <input
-//           type="text"
-//           value={newItem}                        // Controlled input tied to newItem state
-//           onChange={e => setNewItem(e.target.value)}  // Update state on typing
-//           placeholder="Add new item"            // Placeholder text
-//         />
-//         <button onClick={handleAddItem}>➕</button>   {/* Button to add item */}
-//       </div>
-
-//       {/* Section displaying items to buy */}
-//       <div className="list-section">
-//         <h2>To Buy</h2>
-//         <ul>
-//           {/* Filter items not purchased, map to list items */}
-//           {items.filter(item => !item.is_purchased).map(item => (
-//             // List item with unique key and click toggles purchased status
-//             <li key={item.id} onClick={() => toggleItem(item)}>{item.name}</li>
-//           ))}
-//         </ul>
-
-//         {/* Section displaying purchased items */}
-//         <h2>Purchased</h2>
-//         <ul className="purchased">
-//           {/* Filter items purchased, map to list items */}
-//           {items.filter(item => item.is_purchased).map(item => (
-//             <li key={item.id} onClick={() => toggleItem(item)}>{item.name}</li>
-//           ))}
-//         </ul>
-//       </div>
-//     </div>
-//   );
-// }
-
-// export default App;  // Export the component as default for import elsewhere
-// Import React and React hooks
 import React, { useEffect, useState } from 'react';
-// Import styles
-import './App.css';
+import './App.css'; // Custom styles
 
 function App() {
-  // State to hold the list of items
   const [items, setItems] = useState([]);
-  // State for tracking current input field value
   const [newItem, setNewItem] = useState('');
 
-  // useEffect hook to fetch existing items from backend when component mounts
   useEffect(() => {
-    fetch('https://shoppinglist-624w.onrender.com/items/') // API call to fetch items
-      .then(res => res.json())       // Parse the JSON response
-      .then(setItems);               // Set the items into state
-  }, []);                            // Empty array: only run once on mount
+    fetch('https://shoppinglist-624w.onrender.com/items/')
+      .then(res => res.json())
+      .then(setItems);
+  }, []);
 
-  // Function to handle adding a new item
   const handleAddItem = async () => {
-    if (!newItem.trim()) return;  // Prevent adding empty item
+    if (!newItem.trim()) return;
 
     const item = {
-      id: Date.now(),              // Temporary ID using timestamp
-      name: newItem,               // Get name from input field
-      is_purchased: false          // Default state
+      id: Date.now(),
+      name: newItem,
+      is_purchased: false
     };
 
-    // Send POST request to backend to add item
     const res = await fetch('https://shoppinglist-624w.onrender.com/items/', {
       method: 'POST',
-      headers: { 'Content-Type': 'application/json' }, // Set JSON header
-      body: JSON.stringify(item)                        // Stringify item
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(item)
     });
 
-    const data = await res.json();   // Parse response
-
-    setItems([...items, data]);      // Append new item to state
-    setNewItem('');                  // Clear input field
+    const data = await res.json();
+    setItems([...items, data]);
+    setNewItem('');
   };
 
-  // Function to toggle purchase status
   const toggleItem = async (item) => {
-    const updated = { ...item, is_purchased: !item.is_purchased }; // Flip status
+    const updated = { ...item, is_purchased: !item.is_purchased };
 
     const res = await fetch(`https://shoppinglist-624w.onrender.com/items/${item.id}/`, {
       method: 'PUT',
@@ -155,59 +40,93 @@ function App() {
       body: JSON.stringify(updated)
     });
 
-    const data = await res.json();   // Get updated item
-    setItems(items.map(i => i.id === data.id ? data : i)); // Replace in list
+    const data = await res.json();
+    setItems(items.map(i => i.id === data.id ? data : i));
   };
 
-  // Function to reset the app: clears list and input field
+  const deleteItem = async (id) => {
+    await fetch(`https://shoppinglist-624w.onrender.com/items/${id}/`, {
+      method: 'DELETE'
+    });
+    setItems(items.filter(item => item.id !== id));
+  };
+
   const handleReset = () => {
-    setItems([]);       // Clear all items from the state
-    setNewItem('');     // Clear the input field
+    setItems([]);
+    setNewItem('');
   };
 
-  // UI rendering
   return (
-    <div className="app">
-      {/* App title */}
-      <h1>🛒 Shopping List</h1>
+    <div className="container py-5">
+      <h1 className="text-center mb-4 text-primary">🛒 Shopping List</h1>
 
-      {/* Input and control buttons */}
-      <div className="input-section">
+      <div className="input-group mb-4 shadow-sm">
         <input
           type="text"
-          value={newItem}                            // Bind to input state
-          onChange={e => setNewItem(e.target.value)} // Update on change
-          placeholder="Add new item"                // Input placeholder
+          className="form-control"
+          value={newItem}
+          onChange={e => setNewItem(e.target.value)}
+          placeholder="Add a new item..."
         />
-        {/* Add button - disabled if input is empty */}
-        <button onClick={handleAddItem} disabled={!newItem.trim()}>➕</button>
-        {/* Reset button to clear list and input */}
-        <button onClick={handleReset}>♻️</button>
+        <button className="btn btn-success" onClick={handleAddItem} disabled={!newItem.trim()}>➕</button>
+        <button className="btn btn-secondary" onClick={handleReset}>♻️</button>
       </div>
 
-      {/* Items not yet purchased */}
-      <div className="list-section">
-        <h2>To Buy</h2>
-        <ul>
-          {items.filter(item => !item.is_purchased).map(item => (
-            <li key={item.id} onClick={() => toggleItem(item)}>
-              {item.name}
-            </li>
-          ))}
-        </ul>
+      <div className="row g-4">
+        <div className="col-md-6">
+          <h4 className="text-info">📝 To Buy</h4>
+          <ul className="list-group shadow-sm">
+            {items.filter(item => !item.is_purchased).map(item => (
+              <li
+                key={item.id}
+                className="list-group-item d-flex justify-content-between align-items-center"
+              >
+                <span
+                  className="flex-grow-1"
+                  onClick={() => toggleItem(item)}
+                  style={{ cursor: 'pointer' }}
+                >
+                  {item.name}
+                </span>
+                <button
+                  className="btn btn-sm btn-outline-danger ms-3"
+                  onClick={() => deleteItem(item.id)}
+                >
+                  🗑️
+                </button>
+              </li>
+            ))}
+          </ul>
+        </div>
 
-        {/* Items that are purchased */}
-        <h2>Purchased</h2>
-        <ul className="purchased">
-          {items.filter(item => item.is_purchased).map(item => (
-            <li key={item.id} onClick={() => toggleItem(item)}>
-              {item.name}
-            </li>
-          ))}
-        </ul>
+        <div className="col-md-6">
+          <h4 className="text-success">✅ Purchased</h4>
+          <ul className="list-group shadow-sm">
+            {items.filter(item => item.is_purchased).map(item => (
+              <li
+                key={item.id}
+                className="list-group-item d-flex justify-content-between align-items-center"
+              >
+                <span
+                  className="flex-grow-1 text-decoration-line-through text-muted"
+                  onClick={() => toggleItem(item)}
+                  style={{ cursor: 'pointer' }}
+                >
+                  {item.name}
+                </span>
+                <button
+                  className="btn btn-sm btn-outline-danger ms-3"
+                  onClick={() => deleteItem(item.id)}
+                >
+                  🗑️
+                </button>
+              </li>
+            ))}
+          </ul>
+        </div>
       </div>
     </div>
   );
 }
 
-export default App; // Export component as default
+export default App;
