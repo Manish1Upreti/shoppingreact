@@ -1,26 +1,60 @@
 body {
-  background-color: #f8f9fa;
+  background: #f7f9fc;
   font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
 }
 
 h1 {
   font-weight: 700;
-}
-
-input.form-control {
-  border-top-left-radius: 1rem;
-  border-bottom-left-radius: 1rem;
-}
-
-button.btn {
-  border-top-right-radius: 1rem;
-  border-bottom-right-radius: 1rem;
+  color: #343a40;
+  text-shadow: 1px 1px 3px rgba(0,0,0,0.1);
 }
 
 .list-group-item {
-  transition: background-color 0.3s ease;
+  transition: background-color 0.3s ease, box-shadow 0.3s ease;
+  border-radius: 8px;
+  margin-bottom: 8px;
+  background-color: white;
 }
 
 .list-group-item:hover {
-  background-color: #f1f1f1;
+  background-color: #e9f5ff;
+  box-shadow: 0 2px 8px rgba(0,123,255,0.2);
+}
+
+.btn-outline-danger {
+  border-radius: 50%;
+  width: 32px;
+  height: 32px;
+  padding: 0;
+  font-size: 18px;
+  line-height: 1;
+  transition: background-color 0.3s ease;
+}
+
+.btn-outline-danger:hover {
+  background-color: #dc3545;
+  color: white;
+}
+
+.input-group .form-control {
+  border-radius: 25px 0 0 25px;
+}
+
+.input-group .btn-success {
+  border-radius: 0 25px 25px 0;
+  font-weight: bold;
+}
+
+.input-group .btn-secondary {
+  margin-left: 10px;
+  border-radius: 25px;
+  padding: 0 14px;
+  font-size: 1.1rem;
+}
+
+@media (max-width: 576px) {
+  .input-group .btn-secondary {
+    margin-left: 5px;
+    padding: 0 10px;
+  }
 }
