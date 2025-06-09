@@ -1,32 +1,37 @@
 import React, { useEffect, useState } from 'react';
 import './App.css'; // Import your custom CSS
 
+const API_BASE = 'https://shoppinglist-624w.onrender.com';
+
 function App() {
   const [items, setItems] = useState([]);
   const [newItem, setNewItem] = useState('');
 
+  // Fetch all items on mount
   useEffect(() => {
-    fetch('https://shoppinglist-624w.onrender.com/items/')
+    fetch(`${API_BASE}/items/`)
       .then(res => res.json())
       .then(setItems)
       .catch(console.error);
   }, []);
 
+  // Add new item
   const handleAddItem = async () => {
     if (!newItem.trim()) return;
 
+    // Backend will assign ID, no need to set it here
     const item = {
-      id: Date.now(),
       name: newItem.trim(),
       is_purchased: false,
     };
 
     try {
-      const res = await fetch('https://shoppinglist-624w.onrender.com/items/', {
+      const res = await fetch(`${API_BASE}/items/`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(item),
       });
+      if (!res.ok) throw new Error('Failed to add item');
       const data = await res.json();
       setItems([...items, data]);
       setNewItem('');
@@ -35,14 +40,16 @@ function App() {
     }
   };
 
+  // Toggle purchased state
   const toggleItem = async (item) => {
     const updated = { ...item, is_purchased: !item.is_purchased };
     try {
-      const res = await fetch(`https://shoppinglist-624w.onrender.com/items/${item.id}/`, {
+      const res = await fetch(`${API_BASE}/items/${item.id}/`, {
         method: 'PUT',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(updated),
       });
+      if (!res.ok) throw new Error('Failed to update item');
       const data = await res.json();
       setItems(items.map(i => (i.id === data.id ? data : i)));
     } catch (error) {
@@ -50,20 +57,31 @@ function App() {
     }
   };
 
+  // Delete single item
   const deleteItem = async (id) => {
     try {
-      await fetch(`https://shoppinglist-624w.onrender.com/items/${id}/`, {
+      const res = await fetch(`${API_BASE}/items/${id}/`, {
         method: 'DELETE',
       });
+      if (!res.ok) throw new Error('Failed to delete item');
       setItems(items.filter(item => item.id !== id));
     } catch (error) {
       console.error('Delete item failed:', error);
     }
   };
 
-  const handleReset = () => {
-    setItems([]);
-    setNewItem('');
+  // Reset the entire list by calling backend reset endpoint
+  const handleReset = async () => {
+    try {
+      const res = await fetch(`${API_BASE}/items/reset/`, {
+        method: 'DELETE',
+      });
+      if (!res.ok) throw new Error('Failed to reset list');
+      setItems([]);
+      setNewItem('');
+    } catch (error) {
+      console.error('Reset failed:', error);
+    }
   };
 
   return (
@@ -77,6 +95,7 @@ function App() {
           placeholder="Add new item"
           value={newItem}
           onChange={(e) => setNewItem(e.target.value)}
+          onKeyDown={(e) => { if(e.key === 'Enter') handleAddItem(); }}
         />
         <button
           className="btn btn-success"
