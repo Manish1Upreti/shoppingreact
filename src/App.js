@@ -68,9 +68,9 @@ function App() {
 
   return (
     <div className="container py-4">
-      <h1 className="text-center mb-4">🛒 Shopping List</h1>
+      <div className=" texttocenter mb-4">🛒   Shopping List</div>
 
-      <div className="input-group mb-4">
+      {/* <div className="input-group mb-4">
         <input
           type="text"
           className="form-control"
@@ -89,11 +89,41 @@ function App() {
         <button className="btn btn-secondary" onClick={handleReset} title="Reset list">
           ♻️
         </button>
-      </div>
+      </div> */}
+        <div className="input-group row mb-4">
+          <div className="col-sm-12 col-md-6 col-lg-4">
+            <input
+                type="text"
+                className="form-control"
+                placeholder="Add new item"
+                value={newItem}
+                onChange={(e) => setNewItem(e.target.value)}
+            />
+          </div>
+          <div className="col-sm-12 col-md-6 col-lg-4">
+            <button
+                className="btn btn-success w-100"
+                onClick={handleAddItem}
+                disabled={!newItem.trim()}
+                title="Add item"
+            >
+              ➕
+          </button>
+          </div>
+          <div className="col-sm-12 col-md-6 col-lg-4">
+            <button
+              className="btn btn-secondary w-100"
+              onClick={handleReset}
+              title="Reset list"
+              >
+              ♻️
+            </button>
+          </div>
+        </div>
 
       <div className="row">
         <div className="col-md-6">
-          <h4 className="text-primary">To Buy</h4>
+          <div className="texttoleft text-primary"> 🛍️ To Buy</div>
           <ul className="list-group shadow-sm">
             {items.filter(item => !item.is_purchased).length === 0 && (
               <li className="list-group-item text-muted">No items to buy</li>
@@ -125,7 +155,7 @@ function App() {
         </div>
 
         <div className="col-md-6">
-          <h4 className="text-success">Purchased</h4>
+          <div className="texttoleft text-success">✅ Purchased</div>
           <ul className="list-group shadow-sm">
             {items.filter(item => item.is_purchased).length === 0 && (
               <li className="list-group-item text-muted">No purchased items</li>

@@ -17,7 +17,7 @@ color: #333;
 /* --- Styled input group --- */
 .input-group {
   background-color: #ffffff;
-  border-radius: 50px;
+  border-radius: 5px;
   box-shadow: 0 4px 12px rgba(0, 123, 255, 0.1);
   padding: 5px 10px;
   margin-bottom: 10px;
@@ -31,8 +31,9 @@ color: #333;
 /* Input field */
 .input-group .form-control {
   border: none;
-  border-radius: 50px;
-  padding: 12px 20px;
+  border-radius: 10px;
+  padding: 10px;
+  margin: 10px 0;
   font-size: 1rem;
   box-shadow: none;
   outline: none;
@@ -47,27 +48,26 @@ color: #333;
 
 /* Add (➕) button */
 .input-group .btn-success {
-  border-radius: 50px;
+  border-radius: 5px;
   padding: 0 20px;
   font-size: 1.2rem;
   transition: background-color 0.3s ease;
-}
+} 
 
 .input-group .btn-success:hover {
   background-color: #198754;
 }
 
-/* Reset (♻️) button */
+ /* Reset (♻️) button */
 .input-group .btn-secondary {
-  border-radius: 50px;
-  margin-left: 8px;
+  border-radius: 5px;
   padding: 0 20px;
   font-size: 1.2rem;
   background-color: #e4e6eb;
   color: #333;
   border: none;
   transition: background-color 0.3s ease;
-}
+} 
 
 .input-group .btn-secondary:hover {
   background-color: #ced0d4;
@@ -85,12 +85,14 @@ color: #333;
   .input-group .form-control {
     border-radius: 12px;
     width: 100%;
-  }
+  } 
 
   .input-group .btn-success,
   .input-group .btn-secondary {
     width: 100%;
     border-radius: 12px;
+    margin-bottom: 10px;
+    padding: 2px;
   }
 }
 
@@ -105,20 +107,6 @@ max-width: 500px;
 }
 
 /* Header */
-h1 {
-font-size: 2rem;
-font-weight: bold;
-color: #2c3e50;
-margin-bottom: 20px;
-display: flex;
-align-items: center;
-gap: 10px;
-}
-
-h1::before {
-content: "🛒";
-font-size: 1.5rem;
-}
 
 /* Input area */
 .input-section {
@@ -220,4 +208,14 @@ color: #e74c3c;
 
 .item-actions .purchase {
 color: #3498db;
+}
+.texttocenter {
+  text-align: center !important;
+  font-weight: bold;
+  margin-bottom: 20px;
+}
+.texttoleft {
+  text-align: left !important;
+  font-weight: bold;
+  margin: 5px;
 }
